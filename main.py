@@ -29,7 +29,7 @@ class Main(QMainWindow):
         self.addMember = QAction(QIcon('icons/users.png'), "Add Member", self)
         self.tb.addAction(self.addMember)
         self.tb.addSeparator()
-        ###########################################################
+        ########################Sell Products#########################
         self.sellProduct = QAction(QIcon('icons/sell.png'), "Sell Product", self)
         self.tb.addAction(self.sellProduct)
         self.tb.addSeparator()
