@@ -16,9 +16,11 @@ class Main(QMainWindow):
 
     def UI(self):
         self.toolBar()
+        self.tabWigdet()
+        self.layout()
 
     def toolBar(self):
-        self.tb=self.addToolBar("Tool Bar")
+        self.tb = self.addToolBar("Tool Bar")
         self.tb.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
         #####################Toolbar Buttons########################
         #####################Add Product############################
@@ -33,6 +35,27 @@ class Main(QMainWindow):
         self.sellProduct = QAction(QIcon('icons/sell.png'), "Sell Product", self)
         self.tb.addAction(self.sellProduct)
         self.tb.addSeparator()
+
+    def tabWigdet(self):
+        self.tabs = QTabWidget()
+        self.setCentralWidget(self.tabs)
+        self.tab1 = QWidget()
+        self.tab2 = QWidget()
+        self.tab3 = QWidget()
+        self.tabs.addTab(self.tab1, "Products")
+        self.tabs.addTab(self.tab2, "Members")
+        self.tabs.addTab(self.tab3, "Statistics")
+
+    def layouts(self):
+        ######################Tabl Layouts##################
+        self.mainLayout = QHBoxLayout()
+        self.mainLeftLayout = QVBoxLayout()
+        self.mainRightLayout = QVBoxLayout()
+        self.RightTopLayout = QHBoxLayout()
+        self.RightMiddleLayout = QHBoxLayout()
+        self.topGroupBox = QGroupBox()
+        self.middleGroupBox = QGroupBox()
+
 
 def main():
     App=QApplication(sys.argv)
