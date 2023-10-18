@@ -14,7 +14,12 @@ class Main(QMainWindow):
         self.show()
 
     def UI(self):
-        pass
+        self.toolBar()
+
+    def toolBar(self):
+        self.tb=self.addToolBar("Tool Bar")
+        self.addProduct = QAction(QIcon('icons/add.png'), "Add Product", self)
+        self.tb.addAction(self.addProduct)
 
 def main():
     App=QApplication(sys.argv)
