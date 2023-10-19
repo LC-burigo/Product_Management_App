@@ -49,7 +49,7 @@ class Main(QMainWindow):
 
     def widgets(self):
         #########################tab1 widgets#######################
-        #########################Product table widget###############
+        #########################Main left layout widget############
         self.productsTable = QTableWidget()
         self.productsTable.setColumnCount(6)
         self.productsTable.setColumnHidden(0, True)
@@ -59,19 +59,45 @@ class Main(QMainWindow):
         self.productsTable.setHorizontalHeaderItem(3, QTableWidgetItem("Price"))
         self.productsTable.setHorizontalHeaderItem(4, QTableWidgetItem("Quota"))
         self.productsTable.setHorizontalHeaderItem(5, QTableWidgetItem("Availbility"))
+        #########################right top layout widget#############
+        self.searchText = QLabel("Search")
+        self.searchEntry = QLineEdit()
+        self.searchEntry.setPlaceholderText("Search For Products")
+        self.searchButton = QPushButton("Search")
+        #########################right middle layout widget#############
+        self.allProducts = QRadioButton("All Products")
+        self.availableProducts = QRadioButton("Available Products")
+        self.notAvailablealProducts = QRadioButton(" Not Available Products")
+        self.listButton = QPushButton("List")
 
     def layouts(self):
         ######################Tabl Layouts##################
         self.mainLayout = QHBoxLayout()
         self.mainLeftLayout = QVBoxLayout()
         self.mainRightLayout = QVBoxLayout()
-        self.RightTopLayout = QHBoxLayout()
-        self.RightMiddleLayout = QHBoxLayout()
-        self.topGroupBox = QGroupBox()
-        self.middleGroupBox = QGroupBox()
-
+        self.rightTopLayout = QHBoxLayout()
+        self.rightMiddleLayout = QHBoxLayout()
+        self.topGroupBox = QGroupBox("Search Box")
+        self.middleGroupBox = QGroupBox("List Box")
+        ######################Add  Widgets##################
+        ######################Left main layout widgets##################
         self.mainLeftLayout.addWidget(self.productsTable)
-        self.mainLayout.addLayout(self.mainLeftLayout)
+        ######################Right main layout widgets##################
+        self.rightTopLayout.addWidget(self.searchText)
+        self.rightTopLayout.addWidget(self.searchEntry)
+        self.rightTopLayout.addWidget(self.searchButton)
+        self.topGroupBox.setLayout(self.rightTopLayout)
+        ######################Right middle layout widgets##################
+        self.rightMiddleLayout.addWidget(self.allProducts)
+        self.rightMiddleLayout.addWidget(self.availableProducts)
+        self.rightMiddleLayout.addWidget(self.notAvailablealProducts)
+        self.rightMiddleLayout.addWidget(self.listButton)
+        self.middleGroupBox.setLayout(self.rightMiddleLayout)
+
+        self.mainRightLayout.addWidget(self.topGroupBox)
+        self.mainRightLayout.addWidget(self.middleGroupBox)
+        self.mainLayout.addLayout(self.mainLeftLayout, 70)
+        self.mainLayout.addLayout(self.mainRightLayout, 30)
         self.tab1.setLayout(self.mainLayout)
 
 
