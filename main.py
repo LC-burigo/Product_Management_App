@@ -18,7 +18,7 @@ class Main(QMainWindow):
         self.toolBar()
         self.tabWigdet()
         self.widgets()
-        self.layout()
+        self.layouts()
 
     def toolBar(self):
         self.tb = self.addToolBar("Tool Bar")
