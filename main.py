@@ -2,6 +2,10 @@ import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import Qt
+import sqlite3
+
+con = sqlite3.connect("products.db")
+cur = con.cursor()
 
 class Main(QMainWindow):
     def __init__(self):
@@ -69,6 +73,16 @@ class Main(QMainWindow):
         self.availableProducts = QRadioButton("Available Products")
         self.notAvailablealProducts = QRadioButton(" Not Available Products")
         self.listButton = QPushButton("List")
+        #########################tab2 widgets#######################
+        self.membersTableWidgets = QTableWidget()
+        self.membersTableWidgets.setColumnCount(4)
+        self.membersTableWidgets.setHorizontalHeaderItem(0, QTableWidgetItem("Member ID"))
+        self.membersTableWidgets.setHorizontalHeaderItem(1, QTableWidgetItem("Member Name"))
+        self.membersTableWidgets.setHorizontalHeaderItem(2, QTableWidgetItem("Member Surname"))
+        self.membersTableWidgets.setHorizontalHeaderItem(3, QTableWidgetItem("Phone"))
+        self.memberSearchText = QLabel("Search Members")
+        self.memberSearchEntry = QLineEdit()
+        self.memberSearchButton = QPushButton("Search")
 
     def layouts(self):
         ######################Tabl Layouts##################
@@ -99,6 +113,22 @@ class Main(QMainWindow):
         self.mainLayout.addLayout(self.mainLeftLayout, 70)
         self.mainLayout.addLayout(self.mainRightLayout, 30)
         self.tab1.setLayout(self.mainLayout)
+        ######################Tabl2 Layouts##################
+        self.memberMainLayout = QHBoxLayout()
+        self.memberLeftLayout = QHBoxLayout()
+        self.memberRightLayout = QHBoxLayout()
+        self.memberRightGroupBox = QGroupBox("Search For Members")
+        self.memberRightGroupBox.setContentsMargins(10, 10, 10, 600)
+
+        self.memberRightLayout.addWidget(self.memberSearchText)
+        self.memberRightLayout.addWidget(self.memberSearchEntry)
+        self.memberRightLayout.addWidget(self.memberSearchButton)
+        self.memberRightGroupBox.setLayout(self.memberRightLayout)
+
+        self.memberLeftLayout.addWidget(self.membersTableWidgets)
+        self.memberMainLayout.addLayout(self.memberLeftLayout, 70)
+        self.memberMainLayout.addWidget(self.memberRightGroupBox, 30)
+        self.tab2.setLayout(self.memberMainLayout)
 
 
 def main():
