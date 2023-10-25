@@ -41,13 +41,8 @@ class AddProduct(QWidget):
         self.qoutaEntry.setPlaceholderText("Enter qouta of product")
         self.uploadBtn = QPushButton("Upload")
         self.uploadBtn.clicked.connect(self.uploadImg)
-<<<<<<< HEAD
         self.submitBtn = QPushButton("Submit")
         self.submitBtn.clicked.connect(self.addProduct)
-=======
-        self.submitBtm = QPushButton("Submit")
-        self.submitBtm.clicked.connect(self.addProduct)
->>>>>>> main
 
     def layouts(self):
         self.mainLayout = QVBoxLayout()
