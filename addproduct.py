@@ -93,6 +93,10 @@ class AddProduct(QWidget):
                 con.commit()
                 QMessageBox.information(self, "Info", "Product has been added")
                 con.close()
+                self.nameEntry.setText("")
+                self.manufacturerEntry.setText("")
+                self.priceEntry.setText("")
+                self.qoutaEntry.setText("")
             except:
                 QMessageBox.information(self, "Info", "Product hasnt been added")
         else:
