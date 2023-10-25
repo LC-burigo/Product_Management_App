@@ -69,7 +69,6 @@ class AddProduct(QWidget):
 
     def uploadImg(self):
         global defaultImg
-
         size = (256, 256)
         self.filename,ok = QFileDialog.getOpenFileName(self,"Upload Image", "", "Image Files (*.jpg *.png)")
         if ok:
@@ -77,3 +76,23 @@ class AddProduct(QWidget):
             img = Image.open(self.filename)
             img = img.resize(size)
             img.save("img/{0}".format(defaultImg))
+
+    def addProduct(self):
+        global defaultImg
+        name =self.nameEntry.text()
+        manufacturer=self.manufacturerEntry.text()
+        price=self.priceEntry.text()
+        qouta =self.qoutaEntry.text()
+
+        if (name and manufacturer and price and qouta !=""):
+            try:
+                query="INSERT INTO 'products' (product_name,product_manufacturer,product_price,product_qouta,product_img) VALUES(?,?,?,?,?)"
+                cur.execute(query,(name,manufacturer,price,qouta,defaultImg))
+                con.commit()
+                QMessageBox.information(self,"Info","Product has been added")
+
+            except:
+                QMessageBox.information(self, "Info", "Product has not been added")
+
+        else:
+            QMessageBox.information(self, "Info", "Fields cant be empty!!!")
