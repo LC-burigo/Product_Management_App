@@ -39,6 +39,7 @@ class Main(QMainWindow):
         ###########################add Member######################
         self.addMember = QAction(QIcon('icons/users.png'), "Add Member", self)
         self.tb.addAction(self.addMember)
+        self.addMember.triggered.connect(self.funcAddMember)
         self.tb.addSeparator()
         ########################Sell Products#########################
         self.sellProduct = QAction(QIcon('icons/sell.png'), "Sell Product", self)
@@ -148,43 +149,42 @@ class Main(QMainWindow):
         for i in reversed(range(self.productsTable.rowCount())):
             self.productsTable.removeRow(i)
 
-        query = cur.execute(
-            "SELECT product_id,product_name,product_manufacterer,product_price,product_qouta,product_availability FROM products")
+        query = cur.execute("SELECT product_id, product_name, product_manufacterer, product_price, product_price, product_availability FROM products")
+
         for row_data in query:
             row_number = self.productsTable.rowCount()
             self.productsTable.insertRow(row_number)
             for column_number, data in enumerate(row_data):
-                self.productsTable.setItem(
-                    row_number, column_number, QTableWidgetItem(str(data)))
-                
-    def displayMembers(self):
-        self.membersTable.setFont(QFont("Times",12))
-        for i in reversed(range(self.membersTable.rowCount())):
-            self.membersTable.removeRow(i)
-
-        members=cur.execute("SELECT * FROM members")
-        for row_data in members:
-            row_number = self.membersTable.rowCount()
-            self.membersTable.insertRow(row_number)
-            for column_number, data in enumerate(row_data):
-                self.membersTable.setItem(row_number,column_number,QTableWidgetItem(str(data)))          
-
-        self.membersTable.setEditTriggers(QAbstractItemView.NoEditTriggers)
+                self.productsTable.setItem(row_number, column_number, QTableWidgetItem(str(data)))
 
         self.productsTable.setEditTriggers(QAbstractItemView.NoEditTriggers)
 
+    def displayMembers(self):
+        self.membersTable.setFont(QFont("Times", 12))
+        for i in reversed(range(self.membersTable.rowCount())):
+            self.membersTable.removeRow(i)
+
+        query = cur.execute("SELECT * FROM members")
+
+        for row_data in query:
+            row_number = self.membersTable.rowCount()
+            self.membersTable.insertRow(row_number)
+            for column_number, data in enumerate(row_data):
+                self.membersTable.setItem(row_number, column_number, QTableWidgetItem(str(data)))
+
+        self.membersTable.setEditTriggers(QAbstractItemView.NoEditTriggers)
+
     def selectedProduct(self):
         global productId
-        listProduct=[]
-        for i in range(0,6):
-            listProduct.append(self.productsTable.item(self.productsTable.currentRow(),i).text())
-    
+        listProduct = []
+        for i in range(0, 6):
+            listProduct.append(self.productsTable.item(self.productsTable.currentRow(), i).text())
+        
         productId = listProduct[0]
-        self.display = DisplayProduct()
+        self.display = displayProduct()
         self.display.show()
 
-
-class DisplayProduct(QWidget):
+class displayProduct(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Product Details")
@@ -195,18 +195,25 @@ class DisplayProduct(QWidget):
         self.show()
 
     def UI(self):
-      self.productDetails()
+        self.product_Details()
 
-    def productDetails(self):
+    def product_Details(self):
         global productId
         query = ("SELECT * FROM products WHERE product_id=?")
         product = cur.execute(query, (productId,)).fetchone()
-        self.productName = product[1]
-        self.productManufacturer = product[2]
-        self.productPrice = product[3]
-        self.productQouta = product[4]
+        self.product_Name = product[1]
+        self.product_Manufacterer = product[2]
+        self.product_Price = product[3]
+        self.product_Qouta = product[4]
         self.productImg = product[5]
         self.productStatus = product[6]
+
+    def layouts(self):
+        self.mainLayout = QVBoxLayout()
+        self.topLayout = QVBoxLayout()
+        self.bottomLayout = QFormLayout()
+        self.topFrame = QFrame()
+        self.bottomFrame = QFrame()
 
 def main():
     App=QApplication(sys.argv)

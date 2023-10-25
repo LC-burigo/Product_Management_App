@@ -42,6 +42,7 @@ class AddProduct(QWidget):
         self.uploadBtn = QPushButton("Upload")
         self.uploadBtn.clicked.connect(self.uploadImg)
         self.submitBtm = QPushButton("Submit")
+        self.submitBtm.clicked.connect(self.addProduct)
 
     def layouts(self):
         self.mainLayout = QVBoxLayout()
@@ -86,7 +87,7 @@ class AddProduct(QWidget):
 
         if (name and manufacturer and price and qouta !=""):
             try:
-                query="INSERT INTO 'products' (product_name,product_manufacturer,product_price,product_qouta,product_img) VALUES(?,?,?,?,?)"
+                query="INSERT INTO 'products' (product_name,product_manufacterer,product_price,product_qouta,product_img) VALUES(?,?,?,?,?)"
                 cur.execute(query,(name,manufacturer,price,qouta,defaultImg))
                 con.commit()
                 QMessageBox.information(self,"Info","Product has been added")
