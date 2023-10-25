@@ -95,3 +95,5 @@ class AddProduct(QWidget):
                 con.close()
             except:
                 QMessageBox.information(self, "Info", "Product hasnt been added")
+        else:
+            QMessageBox.information(self, "Info", "Fields cant be empty!!!")
