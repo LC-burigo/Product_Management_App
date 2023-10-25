@@ -207,6 +207,11 @@ class displayProduct(QWidget):
         self.product_Qouta = product[4]
         self.productImg = product[5]
         self.productStatus = product[6]
+    
+    def widgets(self):
+        ########################Top layout widgets##################
+        self.productImg = QLabel()
+        self.img = QPixmap('img/{}'.format(self.productImg))
 
     def layouts(self):
         self.mainLayout = QVBoxLayout()
