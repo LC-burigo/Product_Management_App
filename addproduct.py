@@ -41,7 +41,8 @@ class AddProduct(QWidget):
         self.qoutaEntry.setPlaceholderText("Enter qouta of product")
         self.uploadBtn = QPushButton("Upload")
         self.uploadBtn.clicked.connect(self.uploadImg)
-        self.submitBtm = QPushButton("Submit")
+        self.submitBtn = QPushButton("Submit")
+        self.submitBtn.clicked.connect(self.addProduct)
 
     def layouts(self):
         self.mainLayout = QVBoxLayout()
@@ -60,7 +61,7 @@ class AddProduct(QWidget):
         self.bottomLayout.addRow(QLabel("Price: "), self.priceEntry)
         self.bottomLayout.addRow(QLabel("Qouta: "), self.qoutaEntry)
         self.bottomLayout.addRow(QLabel("Upload: "), self.uploadBtn)
-        self.bottomLayout.addRow(QLabel(""), self.submitBtm)
+        self.bottomLayout.addRow(QLabel(""), self.submitBtn)
         self.bottomFrame.setLayout(self.bottomLayout)
 
         self.mainLayout.addWidget(self.topFrame)
@@ -77,3 +78,20 @@ class AddProduct(QWidget):
             img = Image.open(self.filename)
             img = img.resize(size)
             img.save("img/{0}".format(defaultImg))
+
+    def addProduct(self):
+        global defaultImg
+        name = self.nameEntry.text()
+        manufacturer = self.manufacturerEntry.text()
+        price = self.priceEntry.text()
+        qouta = self.qoutaEntry.text()
+        
+        if (name and manufacturer and price and qouta != ""):
+            try:
+                query = "INSERT INTO 'products' (product_name, product_manufacterer, product_price, product_qouta, product_img) VALUES (?,?,?,?,?)"
+                cur.execute(query, (name, manufacturer, price, qouta, defaultImg))
+                con.commit()
+                QMessageBox.information(self, "Info", "Product has been added")
+                con.close()
+            except:
+                QMessageBox.information(self, "Info", "Product hasnt been added")
