@@ -196,6 +196,8 @@ class displayProduct(QWidget):
 
     def UI(self):
         self.product_Details()
+        self.widgets()
+        self.layout()
 
     def product_Details(self):
         global productId
@@ -210,8 +212,24 @@ class displayProduct(QWidget):
     
     def widgets(self):
         ########################Top layout widgets##################
-        self.productImg = QLabel()
+        self.product_Img = QLabel()
         self.img = QPixmap('img/{}'.format(self.productImg))
+        self.product_Img.setPixmap(self.img)
+        self.titleText = QLabel("Update Product")
+        ########################Bottom layout widgets##################
+        self.nameEntry = QLineEdit()
+        self.nameEntry.setText(self.product_Name)
+        self.manufacturerEntry = QLineEdit()
+        self.manufacturerEntry.setText(self.product_Manufacterer)
+        self.priceEntry = QLineEdit()
+        self.priceEntry.setText(self.product_Price)
+        self.qoutaEntry = QLineEdit()
+        self.qoutaEntry.setText(self.product_Qouta)
+        self.availabilityCombo = QComboBox()
+        self.availabilityCombo.addItems(["Available", "Unavailable"])
+        self.uploadBtn = QPushButton("Upload")
+        self.deleteBtn = QPushButton("Delete")
+        self.updateBtn = QPushButton("Update")
 
     def layouts(self):
         self.mainLayout = QVBoxLayout()
@@ -219,6 +237,24 @@ class displayProduct(QWidget):
         self.bottomLayout = QFormLayout()
         self.topFrame = QFrame()
         self.bottomFrame = QFrame()
+        ####################add widgets#######################
+        self.topLayout.addWidget(self.titleText)
+        self.topLayout.addWidget(self.product_Img)
+        self.topFrame.setLayout(self.topLayout)
+
+        self.bottomLayout.addRow(QLabel("Name: "), self.nameEntry)
+        self.bottomLayout.addRow(QLabel("Manufacturer: "), self.manufacturerEntry)
+        self.bottomLayout.addRow(QLabel("Price: "), self.priceEntry)
+        self.bottomLayout.addRow(QLabel("Qouta: "), self.qoutaEntry)
+        self.bottomLayout.addRow(QLabel("Status"), self.availabilityCombo)
+        self.bottomLayout.addRow(QLabel("Image: "), self.uploadBtn)
+        self.bottomLayout.addRow(QLabel(""), self.deleteBtn)
+        self.bottomLayout.addRow(QLabel(""), self.updateBtn)
+        self.bottomFrame.setLayout(self.bottomLayout)
+
+        self.mainLayout.addWidget(self.topFrame)
+        self.mainLayout.addWidget(self.bottomFrame)
+        self.setLayout(self.mainLayout)
 
 def main():
     App=QApplication(sys.argv)
