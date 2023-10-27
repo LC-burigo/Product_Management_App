@@ -307,7 +307,7 @@ class displayProduct(QWidget):
             except:
                 QMessageBox.information(
                     self, "Information", "Product hasnt been deleted!")
-                
+      
 def main():
     App=QApplication(sys.argv)
     window=Main()
@@ -315,3 +315,5 @@ def main():
 
 if __name__== '__main__':
     main()
+
+var = 4
