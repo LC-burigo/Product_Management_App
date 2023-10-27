@@ -197,7 +197,7 @@ class displayProduct(QWidget):
     def UI(self):
         self.product_Details()
         self.widgets()
-        self.layout()
+        self.layouts()
 
     def product_Details(self):
         global productId
@@ -215,16 +215,18 @@ class displayProduct(QWidget):
         self.product_Img = QLabel()
         self.img = QPixmap('img/{}'.format(self.productImg))
         self.product_Img.setPixmap(self.img)
+        self.product_Img.setAlignment(Qt.AlignCenter)
         self.titleText = QLabel("Update Product")
+        self.titleText.setAlignment(Qt.AlignCenter)
         ########################Bottom layout widgets##################
         self.nameEntry = QLineEdit()
         self.nameEntry.setText(self.product_Name)
         self.manufacturerEntry = QLineEdit()
         self.manufacturerEntry.setText(self.product_Manufacterer)
         self.priceEntry = QLineEdit()
-        self.priceEntry.setText(self.product_Price)
+        self.priceEntry.setText(str(self.product_Price))
         self.qoutaEntry = QLineEdit()
-        self.qoutaEntry.setText(self.product_Qouta)
+        self.qoutaEntry.setText(str(self.product_Qouta))
         self.availabilityCombo = QComboBox()
         self.availabilityCombo.addItems(["Available", "Unavailable"])
         self.uploadBtn = QPushButton("Upload")
