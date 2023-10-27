@@ -1,9 +1,10 @@
-import sys
+import sys, os
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import Qt
 import sqlite3
 import addproduct, addmember
+from PIL import Image
 
 con = sqlite3.connect("products.db")
 cur = con.cursor()
@@ -230,6 +231,7 @@ class displayProduct(QWidget):
         self.availabilityCombo = QComboBox()
         self.availabilityCombo.addItems(["Available", "Unavailable"])
         self.uploadBtn = QPushButton("Upload")
+        self.uploadBtn.clicked.connect(self.uploadImg)
         self.deleteBtn = QPushButton("Delete")
         self.updateBtn = QPushButton("Update")
 
@@ -257,6 +259,15 @@ class displayProduct(QWidget):
         self.mainLayout.addWidget(self.topFrame)
         self.mainLayout.addWidget(self.bottomFrame)
         self.setLayout(self.mainLayout)
+
+    def uploadImg(self):
+        size = (256, 256)
+        self.filename, ok = QFileDialog.getOpenFileName(self, 'Upload Image', '', 'Image files (*.jpg, *.png)')
+        if ok:
+            defaultImg = os.path.basename(self.filename)
+            img = Image.open(self.filename)
+            img = img.resize(size)
+            img.save("img/{0}".format(defaultImg))
 
 def main():
     App=QApplication(sys.argv)
