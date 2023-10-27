@@ -233,7 +233,9 @@ class displayProduct(QWidget):
         self.uploadBtn = QPushButton("Upload")
         self.uploadBtn.clicked.connect(self.uploadImg)
         self.deleteBtn = QPushButton("Delete")
+        self.deleteBtn.clicked.connect(self.deleteproduct)
         self.updateBtn = QPushButton("Update")
+        self.updateBtn.clicked.connect(self.updateProduct)
 
     def layouts(self):
         self.mainLayout = QVBoxLayout()
@@ -262,13 +264,50 @@ class displayProduct(QWidget):
 
     def uploadImg(self):
         size = (256, 256)
-        self.filename, ok = QFileDialog.getOpenFileName(self, 'Upload Image', '', 'Image files (*.jpg, *.png)')
+        self.filename, ok = QFileDialog.getOpenFileName(self, 'Upload Image', '', 'Image files (*.jpg *.png)')
         if ok:
-            defaultImg = os.path.basename(self.filename)
+            self.productImg = os.path.basename(self.filename)
             img = Image.open(self.filename)
             img = img.resize(size)
-            img.save("img/{0}".format(defaultImg))
+            img.save("img/{0}".format(self.productImg))
 
+    def updateProduct(self):
+        global productId
+        name = self.nameEntry.text()
+        manufacturer = self.manufacturerEntry.text()
+        price = int(self.priceEntry.text())
+        qouta = int(self.qoutaEntry.text())
+        status = self.availabilityCombo.currentText()
+        defaultImg = self.productImg
+
+        if (name and manufacturer and price and qouta !=""):
+
+            try:
+                query = "UPDATE products set product_name=?, product_manufacterer=?, product_price=?, product_qouta=?, product_img=?, product_availability=? WHERE product_id=?"
+                cur.execute(query, (name, manufacturer, price, qouta, defaultImg, status, productId))
+                con.commit()
+                QMessageBox.information(self, "Info", "Product has been updated!")
+            except:
+                QMessageBox.information(self, "Info", "Product hasnt been updated")
+        else:
+            QMessageBox.information(self, "Info", "Fields cant be empty!!!")
+
+    def deleteproduct(self):
+        global productId
+
+        mbox = QMessageBox.question(self, "Warning", "Are you sure to delete this product?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if mbox == QMessageBox.Yes:
+            try:
+                cur.execute("DELETE FROM products WHERE product_id=?", (productId,))
+                con.commit()
+                QMessageBox.information(self, "Information", "Product has been deleted!")
+                con.close()
+                self.close()
+
+            except:
+                QMessageBox.information(
+                    self, "Information", "Product hasnt been deleted!")
+                
 def main():
     App=QApplication(sys.argv)
     window=Main()
