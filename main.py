@@ -232,7 +232,7 @@ class displayProduct(QWidget):
         self.img = QPixmap('img/{}'.format(self.productImg))
         self.product_Img.setPixmap(self.img)
         self.product_Img.setAlignment(Qt.AlignCenter)
-        self.titleText = QLabel("Update Product")
+        self.titleText = QLabel("Display Product")
         self.titleText.setAlignment(Qt.AlignCenter)
         ########################Bottom layout widgets##################
         self.nameEntry = QLineEdit()
@@ -334,6 +334,8 @@ class displayMember(QWidget):
     
     def UI(self):
         self.member_Details()
+        self.widgets()
+        self.layout()
 
     def member_Details(self):
         global memberId
@@ -342,7 +344,26 @@ class displayMember(QWidget):
         self.member_Name = member[1]
         self.member_Surname = member[2]
         self.member_Phone = member[3]
-        print(member)
+
+    def widgets(self):
+        ########################Top layout widgets##################
+        self.member_Img = QLabel()
+        self.img = QPixmap('icons/members.png')
+        self.member_Img.setPixmap(self.img)
+        self.member_Img.setAlignment(Qt.AlignCenter)
+        self.titleText = QLabel("Display Member")
+        self.titleText.setAlignment(Qt.AlignCenter)
+        ########################Bottom layout widgets##################
+        self.nameEntry = QLineEdit()
+        self.nameEntry.setText(self.member_Name)
+        self.surnameEntry = QLineEdit()
+        self.surnameEntry.setText(self.member_Surname)
+        self.phoneEntry = QLineEdit()
+        self.phoneEntry.setText(str(self.member_Phone))
+        self.deleteBtn = QPushButton("Delete")
+        self.deleteBtn.clicked.connect(self.deleteproduct)
+        self.updateBtn = QPushButton("Update")
+        self.updateBtn.clicked.connect(self.updateProduct)
 
     def layout(self):
         self.mainLayout = QVBoxLayout()
@@ -350,6 +371,27 @@ class displayMember(QWidget):
         self.bottomLayout = QFormLayout()
         self.topFrame = QFrame()
         self.bottomFrame = QFrame()
+        ####################add widgets#######################
+        self.topLayout.addWidget(self.titleText)
+        self.topLayout.addWidget(self.member_Img)
+        self.topFrame.setLayout(self.topLayout)
+
+        self.bottomLayout.addRow(QLabel("Name: "), self.nameEntry)
+        self.bottomLayout.addRow(QLabel("Surname: "), self.surnameEntry)
+        self.bottomLayout.addRow(QLabel("Phone: "), self.phoneEntry)
+        self.bottomLayout.addRow(QLabel(""), self.updateBtn)
+        self.bottomLayout.addRow(QLabel(""), self.deleteBtn)
+        self.bottomFrame.setLayout(self.bottomLayout)
+
+        self.mainLayout.addWidget(self.topFrame)
+        self.mainLayout.addWidget(self.bottomFrame)
+        self.setLayout(self.mainLayout)
+
+    def updateProduct(self):
+        pass
+    
+    def deleteproduct(self):
+        pass
 
 
 def main():
