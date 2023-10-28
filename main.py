@@ -89,6 +89,10 @@ class Main(QMainWindow):
         self.membersTable.setHorizontalHeaderItem(1, QTableWidgetItem("Member Name"))
         self.membersTable.setHorizontalHeaderItem(2, QTableWidgetItem("Member Surname"))
         self.membersTable.setHorizontalHeaderItem(3, QTableWidgetItem("Phone"))
+        self.membersTable.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
+        self.membersTable.horizontalHeader().setSectionResizeMode(2, QHeaderView.Stretch)
+        self.membersTable.horizontalHeader().setSectionResizeMode(3, QHeaderView.Stretch)
+        self.membersTable.doubleClicked.connect(self.selectedMember)
         self.memberSearchText = QLabel("Search Members")
         self.memberSearchEntry = QLineEdit()
         self.memberSearchButton = QPushButton("Search")
@@ -184,6 +188,17 @@ class Main(QMainWindow):
         productId = listProduct[0]
         self.display = displayProduct()
         self.display.show()
+
+    def selectedMember(self):
+        global memberId
+        listMember = []
+        for i in range(0, 4):
+            listMember.append(self.membersTable.item(self.membersTable.currentRow(), i).text())
+
+        memberId = listMember[0]
+        self.displayMember = displayMember()
+        self.displayMember.show()
+
 
 class displayProduct(QWidget):
     def __init__(self):
@@ -301,13 +316,42 @@ class displayProduct(QWidget):
                 cur.execute("DELETE FROM products WHERE product_id=?", (productId,))
                 con.commit()
                 QMessageBox.information(self, "Information", "Product has been deleted!")
-                con.close()
                 self.close()
-
             except:
                 QMessageBox.information(
                     self, "Information", "Product hasnt been deleted!")
-      
+
+
+class displayMember(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Members Details")
+        self.setWindowIcon(QIcon('icons/icon.ico'))
+        self.setGeometry(450, 150, 350, 600)
+        self.setFixedSize(self.size())
+        self.UI()
+        self.show()
+    
+    def UI(self):
+        self.member_Details()
+
+    def member_Details(self):
+        global memberId
+        query = ("SELECT * FROM members WHERE member_id=?")
+        member = cur.execute(query, (memberId,)).fetchone()
+        self.member_Name = member[1]
+        self.member_Surname = member[2]
+        self.member_Phone = member[3]
+        print(member)
+
+    def layout(self):
+        self.mainLayout = QVBoxLayout()
+        self.topLayout = QVBoxLayout()
+        self.bottomLayout = QFormLayout()
+        self.topFrame = QFrame()
+        self.bottomFrame = QFrame()
+
+
 def main():
     App=QApplication(sys.argv)
     window=Main()
@@ -315,5 +359,3 @@ def main():
 
 if __name__== '__main__':
     main()
-
-var = 4

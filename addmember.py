@@ -74,7 +74,6 @@ class AddMember(QWidget):
                 cur.execute(query, (name, surname,phone))
                 con.commit()
                 QMessageBox.information(self, "Info", "Member has been added")
-                con.close()
                 self.nameEntry.setText("")
                 self.surnameEntry.setText("")
                 self.phoneEntry.setText("")
