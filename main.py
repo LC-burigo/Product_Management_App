@@ -361,9 +361,9 @@ class displayMember(QWidget):
         self.phoneEntry = QLineEdit()
         self.phoneEntry.setText(str(self.member_Phone))
         self.deleteBtn = QPushButton("Delete")
-        self.deleteBtn.clicked.connect(self.deleteproduct)
+        self.deleteBtn.clicked.connect(self.deletemember)
         self.updateBtn = QPushButton("Update")
-        self.updateBtn.clicked.connect(self.updateProduct)
+        self.updateBtn.clicked.connect(self.updatemember)
 
     def layout(self):
         self.mainLayout = QVBoxLayout()
@@ -387,11 +387,37 @@ class displayMember(QWidget):
         self.mainLayout.addWidget(self.bottomFrame)
         self.setLayout(self.mainLayout)
 
-    def updateProduct(self):
-        pass
+    def updatemember(self):
+        global memberId
+        name = self.nameEntry.text()
+        surname = self.surnameEntry.text()
+        phone = self.phoneEntry.text()
+
+        if (name and surname and phone !=""):
+
+            try:
+                query = "UPDATE members set member_name=?, member_surname=?, member_phone=? WHERE member_id=?"
+                cur.execute(query, (name, surname, phone, memberId))
+                con.commit()
+                QMessageBox.information(self, "Info", "Member has been updated!")
+            except:
+                QMessageBox.information(
+                    self, "Info", "Member hasnt been updated")
+        else:
+            QMessageBox.information(self, "Info", "Fields cant be empty!!!")
     
-    def deleteproduct(self):
-        pass
+    def deletemember(self):
+        global memberId
+
+        mbox = QMessageBox.question(self, "Warning", "Are you sure to delete this member?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if mbox == QMessageBox.Yes:
+            try:
+                cur.execute("DELETE FROM members WHERE member_id=?", (memberId,))
+                con.commit()
+                QMessageBox.information(self, "Information", "Product has been deleted!")
+                self.close()
+            except:
+                QMessageBox.information(self, "Information", "Product hasnt been deleted!")
 
 
 def main():
