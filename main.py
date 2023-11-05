@@ -77,6 +77,7 @@ class Main(QMainWindow):
         self.searchEntry = QLineEdit()
         self.searchEntry.setPlaceholderText("Search For Products")
         self.searchButton = QPushButton("Search")
+        self.searchButton.clicked.connect(self.searchProducts)
         #########################right middle layout widget#############
         self.allProducts = QRadioButton("All Products")
         self.availableProducts = QRadioButton("Available Products")
@@ -199,6 +200,28 @@ class Main(QMainWindow):
         self.displayMember = displayMember()
         self.displayMember.show()
 
+    def searchProducts(self):
+        value = self.searchEntry.text()
+        if value == "":
+            QMessageBox.information(self, "Warning", "Search Query cant be empty!!!")
+        else:
+            self.searchEntry.setText("")
+
+            query = "SELECT product_id, product_name, product_manufacterer, product_price, product_qouta, product_availability FROM products WHERE product_name LIKE ? or product_manufacterer LIKE ?"
+            results = cur.execute(query, ('%'+value+'%','%'+value+'%')).fetchall()
+            print(results)
+
+            if results == []:
+                QMessageBox.information(self, "Warning", "There is no such a product or manufacturer")
+            else:
+                for i in reversed(range(self.productsTable.rowCount())):
+                    self.productsTable.removeRow(i)
+                
+                for row_data in results:
+                    row_number = self.productsTable.rowCount()
+                    self.productsTable.insertRow(row_number)
+                    for column_number, data in enumerate(row_data):
+                        self.productsTable.setItem(row_number, column_number, QTableWidgetItem(str(data)))
 
 class displayProduct(QWidget):
     def __init__(self):
