@@ -45,7 +45,7 @@ class Main(QMainWindow):
         ########################Sell Products#########################
         self.sellProduct = QAction(QIcon('icons/sell.png'), "Sell Product", self)
         self.tb.addAction(self.sellProduct)
-        self.addProduct.triggered.connect(self.funcSellProducts)
+        self.sellProduct.triggered.connect(self.funcSellProducts)
         self.tb.addSeparator()
 
     def tabWigdet(self):
@@ -276,7 +276,7 @@ class Main(QMainWindow):
                         self.productsTable.setItem(row_number, column_number, QTableWidgetItem(str(data)))
 
     def funcSellProducts(self):
-        self.sellProduct = sellings.SellProduct()
+        self.sellProduct = sellings.SellProducts()
 
 class displayProduct(QWidget):
     def __init__(self):

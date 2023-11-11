@@ -29,7 +29,9 @@ class AddProduct(QWidget):
         self.addProductImg = QLabel()
         self.img = QPixmap('icons/addproduct.png')
         self.addProductImg.setPixmap(self.img)
+        self.addProductImg.setAlignment(Qt.AlignCenter)
         self.titleText = QLabel("Add Product")
+        self.titleText.setAlignment(Qt.AlignCenter)
         ###########################widgets of bottom layout####################
         self.nameEntry = QLineEdit()
         self.nameEntry.setPlaceholderText("Enter name of product")
