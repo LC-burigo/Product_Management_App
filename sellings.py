@@ -34,7 +34,21 @@ class SellProducts(QWidget):
         self.memberCombo = QComboBox()
         self.quantityCombo = QComboBox()
         self.submitBtn = QPushButton("Submit")
-        #self.submitBtn.clicked.connect(self.)
+        
+        query = "SELECT * FROM products WHERE product_availability=?"
+        products= cur.execute(query, ('Available',)).fetchall()
+        query2 = "SELECT member_id, member_name FROM members"
+        members= cur.execute(query2).fetchall()
+        quantity = products[0][4]
+
+        for product in products:
+            self.productCombo.addItem(product[1], product[0])
+
+        for member in members:
+            self.memberCombo.addItem(member[1], member[0])
+
+        for i in range(1, quantity+1):
+            self.quantityCombo.addItem(str(i))
 
     def layouts(self):
         self.mainLayout = QVBoxLayout()
