@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import Qt
 import sqlite3
-import addproduct, addmember
+import addproduct, addmember, sellings
 from PIL import Image
 
 con = sqlite3.connect("products.db")
@@ -45,6 +45,7 @@ class Main(QMainWindow):
         ########################Sell Products#########################
         self.sellProduct = QAction(QIcon('icons/sell.png'), "Sell Product", self)
         self.tb.addAction(self.sellProduct)
+        self.addProduct.triggered.connect(self.funcSellProducts)
         self.tb.addSeparator()
 
     def tabWigdet(self):
@@ -68,7 +69,7 @@ class Main(QMainWindow):
         self.productsTable.setHorizontalHeaderItem(2, QTableWidgetItem("Manufacturer"))
         self.productsTable.setHorizontalHeaderItem(3, QTableWidgetItem("Price"))
         self.productsTable.setHorizontalHeaderItem(4, QTableWidgetItem("Quota"))
-        self.productsTable.setHorizontalHeaderItem(5, QTableWidgetItem("Availbility"))
+        self.productsTable.setHorizontalHeaderItem(5, QTableWidgetItem("Availability"))
         self.productsTable.horizontalHeader().setSectionResizeMode(1, QHeaderView.Stretch)
         self.productsTable.horizontalHeader().setSectionResizeMode(2, QHeaderView.Stretch)
         self.productsTable.doubleClicked.connect(self.selectedProduct)
@@ -83,6 +84,7 @@ class Main(QMainWindow):
         self.availableProducts = QRadioButton("Available Products")
         self.notAvailablealProducts = QRadioButton(" Not Available Products")
         self.listButton = QPushButton("List")
+        self.listButton.clicked.connect(self.listProducts)
         #########################tab2 widgets#######################
         self.membersTable = QTableWidget()
         self.membersTable.setColumnCount(4)
@@ -245,6 +247,37 @@ class Main(QMainWindow):
                     for column_number, data in enumerate(row_data):
                         self.membersTable.setItem(row_number, column_number, QTableWidgetItem(str(data)))
 
+    def listProducts(self):
+        if self.allProducts.isChecked() == True:
+            self.displayProducts()
+        elif self.availableProducts.isChecked() == True:
+            query = ("SELECT product_id, product_name, product_manufacterer, product_price, product_qouta, product_availability FROM products WHERE product_availability = 'Available'")
+            products = cur.execute(query).fetchall()
+
+            for i in reversed(range(self.productsTable.rowCount())):
+                    self.productsTable.removeRow(i)
+
+            for row_data in products:
+                    row_number = self.productsTable.rowCount()
+                    self.productsTable.insertRow(row_number)
+                    for column_number, data in enumerate(row_data):
+                        self.productsTable.setItem(row_number, column_number, QTableWidgetItem(str(data)))
+        elif self.notAvailablealProducts.isChecked() == True:
+            query = ("SELECT product_id, product_name, product_manufacterer, product_price, product_qouta, product_availability FROM products WHERE product_availability = 'Unavailable'")
+            products = cur.execute(query).fetchall()
+
+            for i in reversed(range(self.productsTable.rowCount())):
+                    self.productsTable.removeRow(i)
+
+            for row_data in products:
+                    row_number = self.productsTable.rowCount()
+                    self.productsTable.insertRow(row_number)
+                    for column_number, data in enumerate(row_data):
+                        self.productsTable.setItem(row_number, column_number, QTableWidgetItem(str(data)))
+
+    def funcSellProducts(self):
+        self.sellProduct = sellings.SellProduct()
+
 class displayProduct(QWidget):
     def __init__(self):
         super().__init__()
@@ -365,7 +398,7 @@ class displayProduct(QWidget):
             except:
                 QMessageBox.information(
                     self, "Information", "Product hasnt been deleted!")
-
+        
 
 class displayMember(QWidget):
     def __init__(self):

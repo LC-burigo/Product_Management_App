@@ -4,10 +4,8 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import Qt
 import sqlite3
 
-
 con = sqlite3.connect("products.db")
 cur = con.cursor()
-
 
 class AddMember(QWidget):
     def __init__(self):
