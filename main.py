@@ -158,7 +158,7 @@ class Main(QMainWindow):
         for i in reversed(range(self.productsTable.rowCount())):
             self.productsTable.removeRow(i)
 
-        query = cur.execute("SELECT product_id, product_name, product_manufacterer, product_price, product_price, product_availability FROM products")
+        query = cur.execute("SELECT product_id, product_name, product_manufacterer, product_price, product_qouta, product_availability FROM products")
 
         for row_data in query:
             row_number = self.productsTable.rowCount()

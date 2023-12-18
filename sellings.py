@@ -31,6 +31,7 @@ class SellProducts(QWidget):
         self.titleText.setAlignment(Qt.AlignCenter)
         ###########################widgets of bottom layout####################
         self.productCombo = QComboBox()
+        self.productCombo.currentIndexChanged.connect(self.changeComboValue)
         self.memberCombo = QComboBox()
         self.quantityCombo = QComboBox()
         self.submitBtn = QPushButton("Submit")
@@ -71,3 +72,12 @@ class SellProducts(QWidget):
         self.mainLayout.addWidget(self.topFrame)
         self.mainLayout.addWidget(self.bottomFrame)
         self.setLayout(self.mainLayout)
+
+    def changeComboValue(self):
+        self.quantityCombo.clear()
+        product_id = self.productCombo.currentData()
+        query = ("SELECT product_qouta FROM products WHERE product_id =?")
+        qouta = cur.execute(query, (product_id,)).fetchone()
+        
+        for i in range(1, qouta[0] + 1):
+            self.quantityCombo.addItem(str(i))
