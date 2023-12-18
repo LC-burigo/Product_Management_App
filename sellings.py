@@ -35,6 +35,7 @@ class SellProducts(QWidget):
         self.memberCombo = QComboBox()
         self.quantityCombo = QComboBox()
         self.submitBtn = QPushButton("Submit")
+        self.submitBtn.clicked.connect(self.sellProduct)
         
         query = "SELECT * FROM products WHERE product_availability=?"
         products= cur.execute(query, ('Available',)).fetchall()
@@ -81,3 +82,25 @@ class SellProducts(QWidget):
         
         for i in range(1, qouta[0] + 1):
             self.quantityCombo.addItem(str(i))
+
+    def sellProduct(self):
+        productName = self.productCombo.currentText()
+        prodductId = self.productCombo.currentData()
+        memberName=self.memberCombo.currentText()
+        memberId=self.memberCombo.currentData()
+        quantity = int(self.quantityCombo.currentText())
+        self.confirm = ConfirmWindow()
+        self.close()
+
+class ConfirmWindow(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Sell Products")
+        self.setWindowIcon(QIcon('icons/icon.ico'))
+        self.setGeometry(40, 150, 350, 600)
+        self.setFixedSize(self.size())
+        self.UI()
+        self.show()
+    
+    def UI(self):
+        pass
