@@ -84,8 +84,9 @@ class SellProducts(QWidget):
             self.quantityCombo.addItem(str(i))
 
     def sellProduct(self):
+        global productName, productId, memberName, memberId, quantity
         productName = self.productCombo.currentText()
-        prodductId = self.productCombo.currentData()
+        productId = self.productCombo.currentData()
         memberName=self.memberCombo.currentText()
         memberId=self.memberCombo.currentData()
         quantity = int(self.quantityCombo.currentText())
@@ -103,4 +104,53 @@ class ConfirmWindow(QWidget):
         self.show()
     
     def UI(self):
-        pass
+        self.widgets()
+        self.layouts()
+
+    def widgets(self):
+        ###########################widgets of top layout#######################
+        self.sellProductImg = QLabel()
+        self.img = QPixmap('icons/shop.png')
+        self.sellProductImg.setPixmap(self.img)
+        self.sellProductImg.setAlignment(Qt.AlignCenter)
+        self.titleText = QLabel("Sell Product")
+        self.titleText.setAlignment(Qt.AlignCenter)
+        ###########################widgets of bottom layout####################
+        global productName, productId, memberName, memberId, quantity
+        priceQuery = ("SELECT product_price FROM products WHERE product_id=?")
+        price = cur.execute(priceQuery,(productId,)).fetchone()
+        self.productName = QLabel()
+        self.productName.setText(productName)
+        self.memberName = QLabel()
+        self.memberName.setText(memberName)
+        self.amount = quantity * price[0]
+        self.amountLabel = QLabel()
+        self.amountLabel.setText(str(quantity) + "x" + str(price[0]) + "= R$" + str(self.amount))
+        self.confirmBtn = QPushButton("Confirm")
+        self.confirmBtn.clicked.connect(self.confirm)
+
+
+    def layouts(self):
+        self.mainLayout = QVBoxLayout()
+        self.topLayout = QHBoxLayout()
+        self.bottomLayout = QFormLayout()
+        self.topFrame = QFrame()
+        self.bottomFrame = QFrame()
+        ##############################add widgets#####################
+        ###########################widgets of top layouts##########################
+        self.topLayout.addWidget(self.titleText)
+        self.topLayout.addWidget(self.sellProductImg)
+        self.topFrame.setLayout(self.topLayout)
+        ###########################widgets of form layouts##########################
+        self.bottomLayout.addRow(QLabel("Product: "), self.productName)
+        self.bottomLayout.addRow(QLabel("Member: "), self.memberName)
+        self.bottomLayout.addRow(QLabel("Amount: "), self.amountLabel)
+        self.bottomLayout.addRow(QLabel(""), self.confirmBtn)
+        self.bottomFrame.setLayout(self.bottomLayout)
+
+        self.mainLayout.addWidget(self.topFrame)
+        self.mainLayout.addWidget(self.bottomFrame)
+        self.setLayout(self.mainLayout)
+
+    def confirm(self):
+        sellQuery = ("")
