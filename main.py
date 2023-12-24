@@ -100,6 +100,11 @@ class Main(QMainWindow):
         self.memberSearchEntry = QLineEdit()
         self.memberSearchButton = QPushButton("Search")
         self.memberSearchButton.clicked.connect(self.searchMembers)
+        #########################tab3 widgets#######################
+        self.totalProductsLabel = QLabel()
+        self.totalMemberLabel = QLabel()
+        self.soldProductsLabel = QLabel()
+        self.totalAmountLabel = QLabel()
 
     def layouts(self):
         ######################Tabl Layouts##################
@@ -146,6 +151,21 @@ class Main(QMainWindow):
         self.memberMainLayout.addLayout(self.memberLeftLayout, 70)
         self.memberMainLayout.addWidget(self.memberRightGroupBox, 30)
         self.tab2.setLayout(self.memberMainLayout)
+
+        ######################Tabl3 Layouts##################
+        self.statisticsMainLayout = QVBoxLayout()
+        self.statisticsLayout = QFormLayout()
+        self.statisticsGrouBox = QGroupBox("Statistics")
+
+        self.statisticsLayout.addRow("Total Products: ", self.totalProductsLabel)
+        self.statisticsLayout.addRow("Total Members: ", self.totalMemberLabel)
+        self.statisticsLayout.addRow("Total Sellings: ", self.soldProductsLabel)
+        self.statisticsLayout.addRow("Total Amount: ", self.totalAmountLabel)
+
+        self.statisticsGrouBox.setLayout(self.statisticsLayout)
+        self.statisticsGrouBox.setFont(QFont("Arial", 20))
+        self.statisticsMainLayout.addWidget(self.statisticsGrouBox)
+        self.tab3.setLayout(self.statisticsMainLayout)
 
     def funcAddProduct(self):
         self.newProduct = addproduct.AddProduct()
@@ -399,7 +419,6 @@ class displayProduct(QWidget):
                 QMessageBox.information(
                     self, "Information", "Product hasnt been deleted!")
         
-
 class displayMember(QWidget):
     def __init__(self):
         super().__init__()
