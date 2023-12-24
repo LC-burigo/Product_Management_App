@@ -27,6 +27,7 @@ class Main(QMainWindow):
         self.layouts()
         self.displayProducts()
         self.displayMembers()
+        self.getStatistics()
 
     def toolBar(self):
         self.tb = self.addToolBar("Tool Bar")
@@ -50,6 +51,8 @@ class Main(QMainWindow):
 
     def tabWigdet(self):
         self.tabs = QTabWidget()
+        self.tabs.blockSignals(True)
+        self.tabs.currentChanged.connect(self.tabChanged)
         self.setCentralWidget(self.tabs)
         self.tab1 = QWidget()
         self.tab2 = QWidget()
@@ -166,6 +169,7 @@ class Main(QMainWindow):
         self.statisticsGrouBox.setFont(QFont("Arial", 20))
         self.statisticsMainLayout.addWidget(self.statisticsGrouBox)
         self.tab3.setLayout(self.statisticsMainLayout)
+        self.tabs.blockSignals(False)
 
     def funcAddProduct(self):
         self.newProduct = addproduct.AddProduct()
@@ -297,6 +301,25 @@ class Main(QMainWindow):
 
     def funcSellProducts(self):
         self.sellProduct = sellings.SellProducts()
+
+    def getStatistics(self):
+        countProducts = cur.execute("SELECT count(product_id) FROM products").fetchall()
+        countMembers = cur.execute("SELECT count(member_id) FROM members").fetchall()
+        soldProducts = cur.execute("SELECT sum(selling_quantity) FROM sellings").fetchall()
+        totalAmount = cur.execute("SELECT sum(selling_amount) FROM sellings").fetchall()
+        countProducts = countProducts[0][0]
+        countMembers = countMembers[0][0]
+        soldProducts = soldProducts[0][0]
+        totalAmount = totalAmount[0][0]
+        self.totalProductsLabel.setText(str(countProducts))
+        self.totalMemberLabel.setText(str(countMembers))
+        self.soldProductsLabel.setText(str(soldProducts))
+        self.totalAmountLabel.setText(str(totalAmount))
+
+    def tabChanged(self):
+        self.getStatistics()
+        self.displayProducts()
+        self.displayMembers()
 
 class displayProduct(QWidget):
     def __init__(self):
