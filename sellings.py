@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import Qt
 import sqlite3
+import style
 
 con = sqlite3.connect("products.db")
 cur = con.cursor()
@@ -57,7 +58,9 @@ class SellProducts(QWidget):
         self.topLayout = QHBoxLayout()
         self.bottomLayout = QFormLayout()
         self.topFrame = QFrame()
+        self.topFrame.setStyleSheet(style.sellProductTopFrame())
         self.bottomFrame = QFrame()
+        self.bottomFrame.setStyleSheet(style.sellProductbottomFrame())
         ##############################add widgets#####################
         ###########################widgets of top layouts##########################
         self.topLayout.addWidget(self.titleText)
@@ -129,12 +132,15 @@ class ConfirmWindow(QWidget):
         self.confirmBtn = QPushButton("Confirm")
         self.confirmBtn.clicked.connect(self.confirm)
 
+
     def layouts(self):
         self.mainLayout = QVBoxLayout()
         self.topLayout = QHBoxLayout()
         self.bottomLayout = QFormLayout()
         self.topFrame = QFrame()
+        self.topFrame.setStyleSheet(style.confirmProductTopFrame())
         self.bottomFrame = QFrame()
+        self.bottomFrame.setStyleSheet(style.confirmProductbottomFrame())
         ##############################add widgets#####################
         ###########################widgets of top layouts##########################
         self.topLayout.addWidget(self.titleText)
@@ -152,25 +158,4 @@ class ConfirmWindow(QWidget):
         self.setLayout(self.mainLayout)
 
     def confirm(self):
-        global productName, productId, memberName, memberId, quantity
-        try:
-            sellQuery = ("INSERT INTO 'sellings' (selling_product_id, selling_member_id, selling_quantity, selling_amount) VALUES(?,?,?,?)")
-            cur.execute(sellQuery, (productId, memberId, quantity, self.amount))
-            qoutaQuery = ("SELECT product_qouta FROM products WHERE product_id=?")
-            self.qouta = cur.execute(qoutaQuery, (productId,)).fetchone()
-            con.commit()
-
-            if quantity == self.qouta[0]:
-                updateQoutaQuery = ("UPDATE products set product_qouta=?, product_availability=? WHERE product_id=?")
-                cur.execute(updateQoutaQuery, (0, "UnAvailable", productId))
-                con.commit()
-
-            else:
-                newQouta = self.qouta[0] - quantity
-                updateQoutaQuery = ("UPDATE products set product_qouta=? WHERE product_id=?")
-                cur.execute(updateQoutaQuery, (newQouta, productId))
-                con.commit()
-            QMessageBox.information(self, "Info", "Success")
-
-        except:
-            QMessageBox.information(self, "Info", "Something went wrong")
+        sellQuery = ("")
