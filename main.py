@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import Qt
 import sqlite3
-import addproduct, addmember, sellings
+import addproduct, addmember, sellings, style
 from PIL import Image
 
 con = sqlite3.connect("products.db")
@@ -82,12 +82,14 @@ class Main(QMainWindow):
         self.searchEntry.setPlaceholderText("Search For Products")
         self.searchButton = QPushButton("Search")
         self.searchButton.clicked.connect(self.searchProducts)
+        self.searchButton.setStyleSheet(style.searchButtonStyle())
         #########################right middle layout widget#############
         self.allProducts = QRadioButton("All Products")
         self.availableProducts = QRadioButton("Available Products")
         self.notAvailablealProducts = QRadioButton(" Not Available Products")
         self.listButton = QPushButton("List")
         self.listButton.clicked.connect(self.listProducts)
+        self.listButton.setStyleSheet(style.listButtonStyle())
         #########################tab2 widgets#######################
         self.membersTable = QTableWidget()
         self.membersTable.setColumnCount(4)
@@ -117,7 +119,10 @@ class Main(QMainWindow):
         self.rightTopLayout = QHBoxLayout()
         self.rightMiddleLayout = QHBoxLayout()
         self.topGroupBox = QGroupBox("Search Box")
+        self.topGroupBox.setStyleSheet(style.searchBosStyle())
         self.middleGroupBox = QGroupBox("List Box")
+        self.middleGroupBox.setStyleSheet(style.listBoxStyle())
+        self.bottomGroupBox = QGroupBox()
         ######################Add  Widgets##################
         ######################Left main layout widgets##################
         self.mainLeftLayout.addWidget(self.productsTable)
@@ -133,8 +138,9 @@ class Main(QMainWindow):
         self.rightMiddleLayout.addWidget(self.listButton)
         self.middleGroupBox.setLayout(self.rightMiddleLayout)
 
-        self.mainRightLayout.addWidget(self.topGroupBox)
-        self.mainRightLayout.addWidget(self.middleGroupBox)
+        self.mainRightLayout.addWidget(self.topGroupBox, 20)
+        self.mainRightLayout.addWidget(self.middleGroupBox, 20)
+        self.mainRightLayout.addWidget(self.bottomGroupBox, 60)
         self.mainLayout.addLayout(self.mainLeftLayout, 70)
         self.mainLayout.addLayout(self.mainRightLayout, 30)
         self.tab1.setLayout(self.mainLayout)
@@ -378,7 +384,9 @@ class displayProduct(QWidget):
         self.topLayout = QVBoxLayout()
         self.bottomLayout = QFormLayout()
         self.topFrame = QFrame()
+        self.topFrame.setStyleSheet(style.productTopFrame())
         self.bottomFrame = QFrame()
+        self.bottomFrame.setStyleSheet(style.productBottomFrame())
         ####################add widgets#######################
         self.topLayout.addWidget(self.titleText)
         self.topLayout.addWidget(self.product_Img)
@@ -490,7 +498,9 @@ class displayMember(QWidget):
         self.topLayout = QVBoxLayout()
         self.bottomLayout = QFormLayout()
         self.topFrame = QFrame()
+        self.topFrame.setStyleSheet(style.memberTopFrame())
         self.bottomFrame = QFrame()
+        self.bottomFrame.setStyleSheet(style.memberbottomFrame())
         ####################add widgets#######################
         self.topLayout.addWidget(self.titleText)
         self.topLayout.addWidget(self.member_Img)
